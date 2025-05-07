@@ -1,18 +1,8 @@
-
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import VolunteerCard, { Volunteer } from "@/components/volunteers/VolunteerCard";
-import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { Users, Search, Plus, Filter } from "lucide-react";
+import VolunteerHeader from '@/components/volunteers/VolunteerHeader';
+import VolunteerFilter from '@/components/volunteers/VolunteerFilter';
+import VolunteerList from '@/components/volunteers/VolunteerList';
+import { Volunteer } from "@/components/volunteers/VolunteerCard";
 
 // Mock data for volunteers page
 const mockVolunteers: Volunteer[] = [
@@ -155,79 +145,23 @@ const Volunteers = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-3xl font-bold">Volunteer Directory</h1>
-        <Link to="/volunteers/new">
-          <Button className="gap-2">
-            <Plus size={18} />
-            Add Volunteer
-          </Button>
-        </Link>
-      </div>
-
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-grow">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input 
-            placeholder="Search volunteers..." 
-            className="pl-10"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-wrap gap-2 items-center">
-          <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-[120px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="name">Name</SelectItem>
-              <SelectItem value="hours">Total Hours</SelectItem>
-              <SelectItem value="events">Events</SelectItem>
-              <SelectItem value="date">Join Date</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      <VolunteerHeader />
       
-      {isLoading ? (
-        <LoadingSkeleton count={6} type="card" />
-      ) : sortedVolunteers.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <Users className="h-16 w-16 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium">No volunteers found</h3>
-          <p className="text-muted-foreground mt-1">
-            {searchTerm || filterStatus !== "all" 
-              ? "Try adjusting your search or filters" 
-              : "Add your first volunteer to get started"}
-          </p>
-          {!searchTerm && filterStatus === "all" && (
-            <Link to="/volunteers/new">
-              <Button className="mt-4 gap-2">
-                <Plus size={16} />
-                Add Volunteer
-              </Button>
-            </Link>
-          )}
-        </div>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {sortedVolunteers.map((volunteer) => (
-            <VolunteerCard key={volunteer.id} volunteer={volunteer} />
-          ))}
-        </div>
-      )}
+      <VolunteerFilter 
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        filterStatus={filterStatus}
+        setFilterStatus={setFilterStatus}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+      />
+      
+      <VolunteerList 
+        volunteers={sortedVolunteers} 
+        isLoading={isLoading} 
+        searchTerm={searchTerm}
+        filterStatus={filterStatus}
+      />
     </div>
   );
 };
