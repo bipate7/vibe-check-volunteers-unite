@@ -112,4 +112,69 @@
   .status-inactive {
     @apply bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium;
   }
+  
+  /* New colorful card styles */
+  .card-gradient-purple {
+    @apply bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200;
+  }
+  
+  .card-gradient-teal {
+    @apply bg-gradient-to-br from-teal-50 to-teal-100 border-teal-200;
+  }
+  
+  .card-gradient-blue {
+    @apply bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200;
+  }
+  
+  .card-gradient-orange {
+    @apply bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200;
+  }
+  
+  /* Enhanced status indicators */
+  .status-dot {
+    @apply inline-block w-2 h-2 rounded-full mr-1;
+  }
+  
+  .status-dot-active {
+    @apply bg-green-500;
+  }
+  
+  .status-dot-pending {
+    @apply bg-yellow-500;
+  }
+  
+  .status-dot-inactive {
+    @apply bg-red-500;
+  }
+  
+  /* Color-coded categories */
+  .category-education {
+    @apply bg-blue-100 text-blue-800;
+  }
+  
+  .category-environment {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .category-health {
+    @apply bg-red-100 text-red-800;
+  }
+  
+  .category-community {
+    @apply bg-purple-100 text-purple-800;
+  }
+  
+  .category-arts {
+    @apply bg-pink-100 text-pink-800;
+  }
+  
+  /* Improved hover effects */
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  }
+  
+  /* Colorful headers */
+  .header-gradient {
+    @apply bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 text-white;
+  }
 }

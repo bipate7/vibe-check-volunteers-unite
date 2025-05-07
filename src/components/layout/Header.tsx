@@ -21,13 +21,13 @@ const Header = ({ title }: HeaderProps) => {
   };
   
   return (
-    <header className="w-full bg-white border-b p-4 flex items-center justify-between">
+    <header className="w-full bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 text-white border-b p-4 flex items-center justify-between">
       <h1 className="text-2xl font-bold">{title}</h1>
       
       <div className="flex items-center gap-4">
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative">
+            <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/20">
               <Bell size={20} />
               {unreadNotifications > 0 && (
                 <span className="absolute top-0 right-0 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
@@ -64,10 +64,10 @@ const Header = ({ title }: HeaderProps) => {
         
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
+            <Button variant="ghost" className="flex items-center gap-2 text-white hover:bg-white/20">
+              <Avatar className="h-8 w-8 border-2 border-white">
                 <AvatarImage src="" />
-                <AvatarFallback>NG</AvatarFallback>
+                <AvatarFallback className="bg-purple-800 text-white">NG</AvatarFallback>
               </Avatar>
               <span className="hidden sm:inline">NGO Admin</span>
             </Button>

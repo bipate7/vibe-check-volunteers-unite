@@ -11,14 +11,45 @@ type StatsCardProps = {
     value: number;
     isPositive: boolean;
   };
+  variant?: 'purple' | 'teal' | 'blue' | 'orange' | 'default';
 };
 
-const StatsCard = ({ title, value, icon, description, trend }: StatsCardProps) => {
+const StatsCard = ({ title, value, icon, description, trend, variant = 'default' }: StatsCardProps) => {
+  const getCardClasses = () => {
+    switch (variant) {
+      case 'purple':
+        return 'card-gradient-purple';
+      case 'teal':
+        return 'card-gradient-teal';
+      case 'blue':
+        return 'card-gradient-blue';
+      case 'orange':
+        return 'card-gradient-orange';
+      default:
+        return '';
+    }
+  };
+
+  const getIconClasses = () => {
+    switch (variant) {
+      case 'purple':
+        return 'bg-purple-100 text-purple-600';
+      case 'teal':
+        return 'bg-teal-100 text-teal-600';
+      case 'blue':
+        return 'bg-blue-100 text-blue-600';
+      case 'orange':
+        return 'bg-orange-100 text-orange-600';
+      default:
+        return 'bg-primary/10 text-primary';
+    }
+  };
+
   return (
-    <Card>
+    <Card className={`hover-lift ${getCardClasses()}`}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center text-primary">
+        <div className={`h-8 w-8 rounded-md flex items-center justify-center ${getIconClasses()}`}>
           {icon}
         </div>
       </CardHeader>
