@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import Events from "./pages/Events";
 import Volunteers from "./pages/Volunteers";
 import Attendance from "./pages/Attendance";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,10 +22,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Auth Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          
+          {/* Protected Routes with MainLayout */}
           <Route path="/" element={<MainLayout><Dashboard /></MainLayout>} />
           <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
           <Route path="/volunteers" element={<MainLayout><Volunteers /></MainLayout>} />
           <Route path="/attendance" element={<MainLayout><Attendance /></MainLayout>} />
+          
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
