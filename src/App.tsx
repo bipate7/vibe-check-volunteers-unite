@@ -12,6 +12,7 @@ import Attendance from "./pages/Attendance";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
+import VolunteerDetails from "./pages/VolunteerDetails";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/" element={<MainLayout><Dashboard /></MainLayout>} />
           <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
           <Route path="/volunteers" element={<MainLayout><Volunteers /></MainLayout>} />
+          <Route path="/volunteers/:id" element={<MainLayout><VolunteerDetails /></MainLayout>} />
           <Route path="/attendance" element={<MainLayout><Attendance /></MainLayout>} />
           
           {/* Catch-all route */}
