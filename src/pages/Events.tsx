@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,7 @@ import {
 import EventCard, { Event } from "@/components/events/EventCard";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { Calendar, Search, Plus, Filter } from "lucide-react";
+import { getEventPlaceholder } from "@/utils/imageUtils";
 
 // Mock data for events page
 const mockEvents: Event[] = [
@@ -33,7 +33,7 @@ const mockEvents: Event[] = [
     volunteers: 12,
     maxVolunteers: 20,
     status: "upcoming",
-    image: "https://source.unsplash.com/random/800x600/?beach,cleanup"
+    image: getEventPlaceholder("1", "beach,cleanup")
   },
   {
     id: "2",
@@ -46,7 +46,7 @@ const mockEvents: Event[] = [
     volunteers: 8,
     maxVolunteers: 15,
     status: "upcoming",
-    image: "https://source.unsplash.com/random/800x600/?food,charity"
+    image: getEventPlaceholder("2", "food,charity")
   },
   {
     id: "3",

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Users, MapPin, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow, format } from 'date-fns';
+import { getEventPlaceholder } from "@/utils/imageUtils";
 
 export type Event = {
   id: string;
@@ -54,13 +55,20 @@ const EventCard = ({ event, onMarkAttendance }: EventCardProps) => {
     return `Started ${formatDistanceToNow(date, { addSuffix: true })}`;
   };
 
+  // Get image with fallback
+  const eventImage = event.image || getEventPlaceholder(event.id, event.title);
+
   return (
-    <Card className="attendance-card overflow-hidden">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative h-48 overflow-hidden">
         <img
-          src={event.image || `https://source.unsplash.com/random/800x600/?volunteer,${event.title.toLowerCase()}`}
+          src={eventImage}
           alt={event.title}
           className="w-full h-full object-cover transition-all hover:scale-105 duration-200"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = getEventPlaceholder(event.id, 'volunteer');
+          }}
         />
         <div className="absolute top-2 right-2">
           <Badge className={getStatusColor(event.status)}>
@@ -79,15 +87,15 @@ const EventCard = ({ event, onMarkAttendance }: EventCardProps) => {
         <p className="text-sm line-clamp-2">{event.description}</p>
         <div className="flex flex-col gap-2 text-sm">
           <div className="flex items-center gap-2">
-            <MapPin size={16} className="text-ngo-purple" />
+            <MapPin size={16} className="text-primary" />
             <span className="line-clamp-1">{event.location}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Clock size={16} className="text-ngo-purple" />
+            <Clock size={16} className="text-primary" />
             <span>{event.startTime} - {event.endTime}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Users size={16} className="text-ngo-purple" />
+            <Users size={16} className="text-primary" />
             <span>
               {event.volunteers}/{event.maxVolunteers} volunteers
             </span>

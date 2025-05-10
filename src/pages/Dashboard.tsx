@@ -6,6 +6,7 @@ import VolunteerCard, { Volunteer } from "@/components/volunteers/VolunteerCard"
 import { Button } from "@/components/ui/button";
 import { Users, Calendar, Check, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getEventPlaceholder, getVolunteerPlaceholder } from "@/utils/imageUtils";
 
 // Mock data for dashboard
 const mockEvents: Event[] = [
@@ -20,7 +21,7 @@ const mockEvents: Event[] = [
     volunteers: 12,
     maxVolunteers: 20,
     status: "upcoming",
-    image: "https://source.unsplash.com/random/800x600/?beach,cleanup"
+    image: getEventPlaceholder("1", "beach,cleanup")
   },
   {
     id: "2",
@@ -33,7 +34,7 @@ const mockEvents: Event[] = [
     volunteers: 8,
     maxVolunteers: 15,
     status: "upcoming",
-    image: "https://source.unsplash.com/random/800x600/?food,charity"
+    image: getEventPlaceholder("2", "food,charity")
   },
   {
     id: "3",
@@ -46,7 +47,7 @@ const mockEvents: Event[] = [
     volunteers: 15,
     maxVolunteers: 25,
     status: "ongoing",
-    image: "https://source.unsplash.com/random/800x600/?tree,planting"
+    image: getEventPlaceholder("3", "tree,planting")
   }
 ];
 
@@ -62,7 +63,7 @@ const mockVolunteers: Volunteer[] = [
     status: "active",
     eventsAttended: 12,
     totalHours: 48,
-    image: "https://source.unsplash.com/random/300x300/?portrait,woman,1"
+    image: getVolunteerPlaceholder("1", "woman")
   },
   {
     id: "2",
@@ -75,7 +76,7 @@ const mockVolunteers: Volunteer[] = [
     status: "active",
     eventsAttended: 24,
     totalHours: 96,
-    image: "https://source.unsplash.com/random/300x300/?portrait,man,1"
+    image: getVolunteerPlaceholder("2", "man")
   },
   {
     id: "3",
@@ -88,7 +89,7 @@ const mockVolunteers: Volunteer[] = [
     status: "pending",
     eventsAttended: 2,
     totalHours: 6,
-    image: "https://source.unsplash.com/random/300x300/?portrait,woman,2"
+    image: getVolunteerPlaceholder("3", "woman")
   }
 ];
 

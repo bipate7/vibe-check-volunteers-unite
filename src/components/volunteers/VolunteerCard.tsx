@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { getInitials } from "@/utils/imageUtils";
 
 export type Volunteer = {
   id: string;
@@ -25,22 +26,14 @@ type VolunteerCardProps = {
 };
 
 const VolunteerCard = ({ volunteer, compact = false }: VolunteerCardProps) => {
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase();
-  };
-  
   const getStatusClass = (status: Volunteer['status']) => {
     switch (status) {
       case 'active':
-        return 'status-active';
+        return 'bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium';
       case 'inactive':
-        return 'status-inactive';
+        return 'bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-medium';
       case 'pending':
-        return 'status-pending';
+        return 'bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium';
       default:
         return '';
     }
@@ -67,18 +60,18 @@ const VolunteerCard = ({ volunteer, compact = false }: VolunteerCardProps) => {
   }
 
   return (
-    <Card className="attendance-card overflow-hidden">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar className="h-14 w-14">
           <AvatarImage src={volunteer.image} />
-          <AvatarFallback className="text-lg">{getInitials(volunteer.name)}</AvatarFallback>
+          <AvatarFallback className="text-lg bg-primary/10">{getInitials(volunteer.name)}</AvatarFallback>
         </Avatar>
         <div>
           <CardTitle className="flex items-center gap-2">
             {volunteer.name}
-            <div className={getStatusClass(volunteer.status)}>
+            <span className={getStatusClass(volunteer.status)}>
               {volunteer.status}
-            </div>
+            </span>
           </CardTitle>
           <p className="text-sm text-muted-foreground">{volunteer.role}</p>
         </div>

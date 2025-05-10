@@ -1,8 +1,10 @@
+
 import { useState } from 'react';
 import VolunteerHeader from '@/components/volunteers/VolunteerHeader';
 import VolunteerFilter from '@/components/volunteers/VolunteerFilter';
 import VolunteerList from '@/components/volunteers/VolunteerList';
 import { Volunteer } from "@/components/volunteers/VolunteerCard";
+import { getVolunteerPlaceholder } from '@/utils/imageUtils';
 
 // Mock data for volunteers page
 const mockVolunteers: Volunteer[] = [
@@ -17,7 +19,7 @@ const mockVolunteers: Volunteer[] = [
     status: "active",
     eventsAttended: 12,
     totalHours: 48,
-    image: "https://source.unsplash.com/random/300x300/?portrait,woman,1"
+    image: getVolunteerPlaceholder("1", "woman")
   },
   {
     id: "2",
@@ -30,7 +32,7 @@ const mockVolunteers: Volunteer[] = [
     status: "active",
     eventsAttended: 24,
     totalHours: 96,
-    image: "https://source.unsplash.com/random/300x300/?portrait,man,1"
+    image: getVolunteerPlaceholder("2", "man")
   },
   {
     id: "3",
@@ -43,7 +45,7 @@ const mockVolunteers: Volunteer[] = [
     status: "pending",
     eventsAttended: 2,
     totalHours: 6,
-    image: "https://source.unsplash.com/random/300x300/?portrait,woman,2"
+    image: getVolunteerPlaceholder("3", "woman")
   },
   {
     id: "4",
@@ -56,7 +58,7 @@ const mockVolunteers: Volunteer[] = [
     status: "active",
     eventsAttended: 8,
     totalHours: 32,
-    image: "https://source.unsplash.com/random/300x300/?portrait,man,2"
+    image: getVolunteerPlaceholder("4", "man")
   },
   {
     id: "5",
@@ -69,7 +71,7 @@ const mockVolunteers: Volunteer[] = [
     status: "active",
     eventsAttended: 18,
     totalHours: 76,
-    image: "https://source.unsplash.com/random/300x300/?portrait,woman,3"
+    image: getVolunteerPlaceholder("5", "woman")
   },
   {
     id: "6",
@@ -82,7 +84,7 @@ const mockVolunteers: Volunteer[] = [
     status: "inactive",
     eventsAttended: 5,
     totalHours: 15,
-    image: "https://source.unsplash.com/random/300x300/?portrait,man,3"
+    image: getVolunteerPlaceholder("6", "man")
   },
   {
     id: "7",
@@ -95,7 +97,7 @@ const mockVolunteers: Volunteer[] = [
     status: "active",
     eventsAttended: 6,
     totalHours: 24,
-    image: "https://source.unsplash.com/random/300x300/?portrait,woman,4"
+    image: getVolunteerPlaceholder("7", "woman")
   },
   {
     id: "8",
@@ -108,7 +110,7 @@ const mockVolunteers: Volunteer[] = [
     status: "pending",
     eventsAttended: 1,
     totalHours: 3,
-    image: "https://source.unsplash.com/random/300x300/?portrait,man,4"
+    image: getVolunteerPlaceholder("8", "man")
   }
 ];
 
