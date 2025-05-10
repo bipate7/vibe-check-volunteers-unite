@@ -1,24 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import EventCard, { Event } from "@/components/events/EventCard";
-import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { Calendar, Search, Plus, Filter } from "lucide-react";
+import EventsHeader from "@/components/events/EventsHeader";
+import EventsSearch from "@/components/events/EventsSearch";
+import EventsFilter from "@/components/events/EventsFilter";
+import EventsList from "@/components/events/EventsList";
 import { getEventPlaceholder } from "@/utils/imageUtils";
+import { filterEvents, sortEvents } from "@/utils/eventUtils";
+import { Event } from "@/components/events/EventCard";
 
 // Mock data for events page
 const mockEvents: Event[] = [
@@ -134,137 +121,32 @@ const Events = () => {
   const [sortBy, setSortBy] = useState("date");
   const [isLoading] = useState(false);
 
-  const filteredEvents = mockEvents.filter((event) => {
-    const matchesTab = 
-      (activeTab === "upcoming" && event.status === "upcoming") ||
-      (activeTab === "ongoing" && event.status === "ongoing") ||
-      (activeTab === "completed" && event.status === "completed") ||
-      (activeTab === "all");
-      
-    const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          event.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          event.location.toLowerCase().includes(searchTerm.toLowerCase());
-                          
-    return matchesTab && matchesSearch;
-  });
+  // Filter events based on active tab and search term
+  const filteredEvents = filterEvents(mockEvents, activeTab, searchTerm);
   
-  const sortedEvents = [...filteredEvents].sort((a, b) => {
-    if (sortBy === "date") {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-    } else if (sortBy === "title") {
-      return a.title.localeCompare(b.title);
-    } else if (sortBy === "volunteers") {
-      return b.volunteers - a.volunteers;
-    }
-    return 0;
-  });
+  // Sort filtered events
+  const sortedEvents = sortEvents(filteredEvents, sortBy);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-3xl font-bold">Events Management</h1>
-        <Link to="/events/new">
-          <Button className="gap-2">
-            <Plus size={18} />
-            Create New Event
-          </Button>
-        </Link>
-      </div>
-
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-grow">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input 
-            placeholder="Search events..." 
-            className="pl-10"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div className="flex gap-2 items-center">
-          <Filter size={20} className="text-muted-foreground" />
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="date">Date</SelectItem>
-              <SelectItem value="title">Title</SelectItem>
-              <SelectItem value="volunteers">Volunteers</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      <EventsHeader />
       
-      <Tabs defaultValue="upcoming" value={activeTab} onValueChange={setActiveTab}>
-        <TabsList>
-          <TabsTrigger value="all" className="gap-2">
-            <Calendar size={16} />
-            All Events
-          </TabsTrigger>
-          <TabsTrigger value="upcoming" className="gap-2">
-            <Calendar size={16} />
-            Upcoming
-          </TabsTrigger>
-          <TabsTrigger value="ongoing" className="gap-2">
-            <Calendar size={16} />
-            Ongoing
-          </TabsTrigger>
-          <TabsTrigger value="completed" className="gap-2">
-            <Calendar size={16} />
-            Completed
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="all" className="mt-6">
-          {renderEventsList()}
-        </TabsContent>
-        <TabsContent value="upcoming" className="mt-6">
-          {renderEventsList()}
-        </TabsContent>
-        <TabsContent value="ongoing" className="mt-6">
-          {renderEventsList()}
-        </TabsContent>
-        <TabsContent value="completed" className="mt-6">
-          {renderEventsList()}
-        </TabsContent>
-      </Tabs>
+      <EventsSearch 
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+      />
+      
+      <EventsFilter activeTab={activeTab} setActiveTab={setActiveTab}>
+        <EventsList 
+          events={sortedEvents}
+          isLoading={isLoading}
+          searchTerm={searchTerm}
+        />
+      </EventsFilter>
     </div>
   );
-  
-  function renderEventsList() {
-    if (isLoading) {
-      return <LoadingSkeleton count={3} type="card" />;
-    }
-    
-    if (sortedEvents.length === 0) {
-      return (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <Calendar className="h-16 w-16 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium">No events found</h3>
-          <p className="text-muted-foreground mt-1">
-            {searchTerm ? "Try adjusting your search terms" : "Create your first event to get started"}
-          </p>
-          {!searchTerm && (
-            <Link to="/events/new">
-              <Button className="mt-4 gap-2">
-                <Plus size={16} />
-                Create New Event
-              </Button>
-            </Link>
-          )}
-        </div>
-      );
-    }
-    
-    return (
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {sortedEvents.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </div>
-    );
-  }
 };
 
 export default Events;
