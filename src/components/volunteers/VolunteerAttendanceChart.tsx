@@ -7,9 +7,13 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  Legend
+  Legend,
+  Area,
+  ComposedChart,
+  Line
 } from 'recharts';
 import { AttendanceRecord } from '@/components/attendance/AttendanceTable';
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 
 type Props = {
   attendanceRecords: AttendanceRecord[];
@@ -50,7 +54,10 @@ const VolunteerAttendanceChart = ({ attendanceRecords }: Props) => {
     .map(month => ({
       month,
       hours: groupedByMonth[month].hours,
-      events: groupedByMonth[month].events
+      events: groupedByMonth[month].events,
+      efficiency: groupedByMonth[month].hours > 0 && groupedByMonth[month].events > 0 
+        ? +(groupedByMonth[month].hours / groupedByMonth[month].events).toFixed(1)
+        : 0
     }));
     
   // If no data, return placeholder
@@ -62,27 +69,91 @@ const VolunteerAttendanceChart = ({ attendanceRecords }: Props) => {
     );
   }
   
+  // Chart configuration
+  const chartConfig = {
+    hours: {
+      label: "Volunteer Hours",
+      theme: {
+        light: "#8884d8",
+        dark: "#9F7AEA"
+      }
+    },
+    events: {
+      label: "Events Attended",
+      theme: {
+        light: "#82ca9d",
+        dark: "#4FD1C5"
+      }
+    },
+    efficiency: {
+      label: "Avg Hours per Event",
+      theme: {
+        light: "#ffc658",
+        dark: "#FEC6A1"
+      }
+    }
+  };
+  
   return (
-    <ResponsiveContainer width="100%" height={250}>
-      <BarChart
+    <ChartContainer config={chartConfig} className="aspect-auto h-[250px]">
+      <ComposedChart
         data={chartData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 0,
-          bottom: 5,
-        }}
+        margin={{ top: 10, right: 30, left: 0, bottom: 10 }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="month" />
-        <YAxis yAxisId="left" />
-        <YAxis yAxisId="right" orientation="right" />
-        <Tooltip />
-        <Legend />
-        <Bar yAxisId="left" dataKey="hours" fill="#8884d8" name="Hours" />
-        <Bar yAxisId="right" dataKey="events" fill="#82ca9d" name="Events" />
-      </BarChart>
-    </ResponsiveContainer>
+        <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.4} />
+        <XAxis 
+          dataKey="month" 
+          tick={{ fontSize: 12 }}
+          tickMargin={10}
+        />
+        <YAxis 
+          yAxisId="left" 
+          orientation="left" 
+          tick={{ fontSize: 12 }}
+          tickMargin={10}
+          width={30}
+        />
+        <YAxis 
+          yAxisId="right" 
+          orientation="right" 
+          tick={{ fontSize: 12 }}
+          tickMargin={10}
+          width={30}
+        />
+        <Tooltip 
+          content={<ChartTooltipContent />} 
+          wrapperStyle={{ outline: "none" }}
+          cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
+        />
+        <Legend wrapperStyle={{ paddingTop: '10px' }} />
+        <Bar 
+          yAxisId="left" 
+          dataKey="hours" 
+          fill="var(--color-hours)" 
+          name="Hours"
+          radius={[4, 4, 0, 0]}
+          barSize={24}
+        />
+        <Bar 
+          yAxisId="right" 
+          dataKey="events" 
+          fill="var(--color-events)" 
+          name="Events"
+          radius={[4, 4, 0, 0]}
+          barSize={24}
+        />
+        <Line
+          yAxisId="right"
+          type="monotone"
+          dataKey="efficiency"
+          stroke="var(--color-efficiency)"
+          strokeWidth={2}
+          dot={{ r: 4 }}
+          activeDot={{ r: 6 }}
+          name="Avg Hours/Event"
+        />
+      </ComposedChart>
+    </ChartContainer>
   );
 };
 
