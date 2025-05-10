@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import VolunteerDetails from "./pages/VolunteerDetails";
+import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
@@ -23,12 +24,15 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public Home Page */}
+          <Route path="/" element={<Index />} />
+          
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           
           {/* Protected Routes with MainLayout */}
-          <Route path="/" element={<MainLayout><Dashboard /></MainLayout>} />
+          <Route path="/dashboard" element={<MainLayout><Dashboard /></MainLayout>} />
           <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
           <Route path="/volunteers" element={<MainLayout><Volunteers /></MainLayout>} />
           <Route path="/volunteers/:id" element={<MainLayout><VolunteerDetails /></MainLayout>} />
