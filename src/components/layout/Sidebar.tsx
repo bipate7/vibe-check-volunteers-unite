@@ -46,7 +46,7 @@ const Sidebar = () => {
   };
   
   const navItems = [
-    { to: "/", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+    { to: "/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
     { to: "/events", icon: <Calendar size={20} />, label: "Events" },
     { to: "/volunteers", icon: <Users size={20} />, label: "Volunteers" },
     { to: "/attendance", icon: <Check size={20} />, label: "Attendance" }
@@ -78,7 +78,7 @@ const Sidebar = () => {
             to={item.to} 
             icon={item.icon} 
             label={item.label}
-            isActive={location.pathname === item.to}
+            isActive={location.pathname === item.to || (item.to === "/dashboard" && location.pathname === "/")}
             isCollapsed={collapsed}
           />
         ))}

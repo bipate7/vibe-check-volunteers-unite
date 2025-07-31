@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { useLocation } from 'react-router-dom';
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import Breadcrumb from "./Breadcrumb";
 
 type MainLayoutProps = {
   children: ReactNode;
@@ -43,6 +44,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header title={getPageTitle()} />
         <main className="flex-1 overflow-auto p-6 bg-gradient-to-br from-white to-purple-50">
+          <Breadcrumb />
           {children}
         </main>
       </div>

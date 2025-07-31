@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { 
   Popover,
@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell } from "lucide-react";
+import { Bell, Plus, Calendar, Users, UserPlus } from "lucide-react";
 
 type HeaderProps = {
   title: string;
@@ -16,7 +16,8 @@ type HeaderProps = {
 
 const Header = ({ title }: HeaderProps) => {
   const [unreadNotifications, setUnreadNotifications] = useState(2);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // This would be replaced with actual auth state
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // This would be replaced with actual auth state
+  const location = useLocation();
   
   const markAsRead = () => {
     setUnreadNotifications(0);
@@ -28,10 +29,60 @@ const Header = ({ title }: HeaderProps) => {
     setIsLoggedIn(false);
     // Navigate to login page or show a toast message
   };
+
+  const getQuickActions = () => {
+    const path = location.pathname;
+    
+    if (path === '/dashboard' || path === '/') {
+      return (
+        <div className="flex items-center gap-2">
+          <Link to="/events">
+            <Button variant="secondary" size="sm" className="bg-white/20 text-white hover:bg-white/30">
+              <Calendar size={16} className="mr-1" />
+              Events
+            </Button>
+          </Link>
+          <Link to="/volunteers">
+            <Button variant="secondary" size="sm" className="bg-white/20 text-white hover:bg-white/30">
+              <Users size={16} className="mr-1" />
+              Volunteers
+            </Button>
+          </Link>
+        </div>
+      );
+    }
+    
+    if (path === '/events') {
+      return (
+        <Link to="/events/new">
+          <Button variant="secondary" size="sm" className="bg-white/20 text-white hover:bg-white/30">
+            <Plus size={16} className="mr-1" />
+            New Event
+          </Button>
+        </Link>
+      );
+    }
+    
+    if (path === '/volunteers' || path.startsWith('/volunteers/')) {
+      return (
+        <Link to="/volunteers/new">
+          <Button variant="secondary" size="sm" className="bg-white/20 text-white hover:bg-white/30">
+            <UserPlus size={16} className="mr-1" />
+            Add Volunteer
+          </Button>
+        </Link>
+      );
+    }
+    
+    return null;
+  };
   
   return (
     <header className="w-full bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 text-white border-b p-4 flex items-center justify-between">
-      <h1 className="text-2xl font-bold">{title}</h1>
+      <div className="flex items-center gap-4">
+        <h1 className="text-2xl font-bold">{title}</h1>
+        {isLoggedIn && getQuickActions()}
+      </div>
       
       <div className="flex items-center gap-4">
         {isLoggedIn ? (

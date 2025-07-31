@@ -7,7 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Events from "./pages/Events";
+import EventCreate from "./pages/EventCreate";
+import EventDetails from "./pages/EventDetails";
 import Volunteers from "./pages/Volunteers";
+import VolunteerCreate from "./pages/VolunteerCreate";
 import Attendance from "./pages/Attendance";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -34,7 +37,10 @@ const App = () => (
           {/* Protected Routes with MainLayout */}
           <Route path="/dashboard" element={<MainLayout><Dashboard /></MainLayout>} />
           <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
+          <Route path="/events/new" element={<MainLayout><EventCreate /></MainLayout>} />
+          <Route path="/events/:id" element={<MainLayout><EventDetails /></MainLayout>} />
           <Route path="/volunteers" element={<MainLayout><Volunteers /></MainLayout>} />
+          <Route path="/volunteers/new" element={<MainLayout><VolunteerCreate /></MainLayout>} />
           <Route path="/volunteers/:id" element={<MainLayout><VolunteerDetails /></MainLayout>} />
           <Route path="/attendance" element={<MainLayout><Attendance /></MainLayout>} />
           
